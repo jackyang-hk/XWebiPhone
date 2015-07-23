@@ -122,15 +122,7 @@
 
 - (void) getBridgeData {
     _initFinished = true;
-//    [self doCommonUploadWithUrl:@"http://www.52shangou.com/o2o/app_config/buyerConfig.php?disableCache=true" param:nil finish:@selector(requestDidFinished:)];
-#ifdef DAILY
-    [self doCommonUploadWithUrl:@"http://daily.52shangou.com/o2o/app_config/buyerConfig.php" finish:@selector(requestDidFinished:)];
-#elif GRAY
-    [self doCommonUploadWithUrl:@"http://gray.52shangou.com/o2o/app_config/buyerConfig.php" finish:@selector(requestDidFinished:)];
-#else
     [self doCommonUploadWithUrl:@"http://www.52shangou.com/o2o/app_config/buyerConfig.php" finish:@selector(requestDidFinished:)];
-#endif
-
 }
 
 - (void) loadFromSaveData {
