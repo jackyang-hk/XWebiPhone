@@ -1,0 +1,30 @@
+{
+  "version": 0,
+  "enabled": true,
+  "extensions": "js,css,jpg,jpeg,png,gif,webp,woff",
+  "whitelist": [
+    "51xianqu.com",
+    "52shangou.com",
+    "taobao.com",
+    "tmall.com",
+    "juhuasuan.com",
+    "juzone.cc",
+    "juzone.me",
+    "juhs.me",
+    "h5tool.com",
+    "h5util.com",
+    "fastidea.cc",
+    "fastidea.me",
+    "spdyidea.com",
+    "polyinno.com",
+    "mshare.cc",
+    "wirlesshare.com",
+    "5945i.com"
+  ],
+  "blacklist":[
+    "h5.m.taobao.com/app",
+    "daily.51xianqu.com",         
+    "h5.wapa.taobao.com/app",
+    "h5.waptest.taobao.com/app"
+  ]
+}

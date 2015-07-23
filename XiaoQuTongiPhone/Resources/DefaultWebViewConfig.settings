@@ -1,0 +1,39 @@
+{
+"extensions": [{
+"extension": "js",
+"validPeriod": 2592000000
+},
+{
+"extension": "css",
+"validPeriod": 2592000000
+},
+{
+"extension": "jpg",
+"validPeriod": 2592000000
+},
+{
+"extension": "png",
+"validPeriod": 2592000000
+},
+{
+"extension": "woff",
+"validPeriod": 2592000000
+},
+{
+"extension": "ttf",
+"validPeriod": 2592000000
+},
+{
+"extension": "gif",
+"validPeriod": 2592000000
+},
+{
+"extension": "ico",
+"validPeriod": 2592000000
+
+}],
+"cacheOn": true,
+"cacheWhitelist": ["www.52shangou.com", "www.51xianqu.com"],
+"cacheBlacklist": ["daily.52shangou.com", "daily.51xianqu.com"],
+"interceptWhitelist": ["52shangou.com", "51xianqu.com", "51xianqu.net", "alibaba.com", "alibaba-inc.com", "alicdn.com", "alipay.com", "alipaydns.com", "apache.org", "baidu.com", "qq.com", "shequ001.com", "sina.com", "taobaocdn.com", "taobao.com", "tbcdn.cn", "t.cn", "tmall.com", "umeng.com", "umengcloud.com", "umeng.co", "apple.com","10.17.10.90", "120.26.202.177", "120.26.67.57"]
+}

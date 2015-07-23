@@ -1,0 +1,849 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+            
+            <style>
+                /*干掉电信联通运营商头部*/
+                .tlba {
+                    position: absolute;
+                    top: -200px;
+                }
+            /*去处原有设置*/
+            body, div, img, p, a, h2,span,ul,li {
+                margin:0;
+                padding:0;
+                border:none;
+                outline:none;
+                background: none;
+            }
+            body, html {
+                overflow-x: hidden;
+                overflow-y: auto;
+            }
+            /*定义默认body属性*/
+            body {
+                font-family: Arial,"Hiragino Sans GB W3","Hiragino Sans GB","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif;
+                font-size:12px;
+                width: 100%;
+                background-color: #ededf3;
+                -webkit-tap-highlight-color: rgba(0,0,0,0);
+            }
+            input,button{
+                outline: medium none;
+            }
+            .warnindaily{
+                position: fixed;
+                width: 30%;
+                height: 10px;
+            }
+            .clicked {
+                background-color: rgba(210, 210, 210, 0.4);
+            }
+            </style>
+            
+            <script>
+                //--------- h5 local cache -----
+                document.domain="10.17.10.234";
+                function cacheLoadJsInLS(domId,saveKey,expireDay) {
+                    var domScriptType = document.getElementById(domId);
+                    if (domScriptType != null && domScriptType.innerHTML != null && domScriptType.innerHTML != "") {
+                        localStorage.setItem(saveKey,domScriptType.innerHTML);
+                        var date=new Date();
+                        var expireDays=expireDay;
+                        date.setTime(date.getTime()+expireDays*24*3600*1000);
+                        document.cookie=saveKey+"=true; expire="+date.toGMTString()+"; path=/; domain=" + document.domain;
+                    }
+                    
+                    var script_element = document.createElement('script');
+                    document.getElementsByTagName('head')[0].appendChild(script_element);
+                    zeptoMinCode = localStorage.getItem(saveKey);
+                    script_element.text = zeptoMinCode;
+                }
+            
+            function cacheLoadJsInLSWithOriginUrl(domId,saveKey,expireDay,jsUrl) {
+                var domScriptType = document.getElementById(domId);
+                if (domScriptType != null && domScriptType.innerHTML != null && domScriptType.innerHTML != "") {
+                    localStorage.setItem(saveKey,domScriptType.innerHTML);
+                    var date=new Date();
+                    var expireDays=expireDay;
+                    date.setTime(date.getTime()+expireDays*24*3600*1000);
+                    document.cookie=saveKey+"=true; expires="+date.toGMTString()+"; path=/; domain=" + document.domain;
+                }
+                
+                var script_element = document.createElement('script');
+                document.getElementsByTagName('head')[0].appendChild(script_element);
+                zeptoMinCode = localStorage.getItem(saveKey);
+                
+                if (zeptoMinCode == null || zeptoMinCode == "") {
+                    script_element.type = "text/javascript";
+                    script_element.src = jsUrl;
+                    delCookie(saveKey);
+                } else {
+                    script_element.text = zeptoMinCode;
+                }
+            }
+            function delCookie(name)
+            {
+                var exp = new Date();
+                exp.setTime(exp.getTime() - 1);
+                var cval=getCookie(name);
+                if(cval!=null)
+                document.cookie = name + "="+cval+";expires="+exp.toGMTString()+"; path=/; domain=" + document.domain;
+            }
+            function getCookie(name)
+            {
+                var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+                if(arr=document.cookie.match(reg))
+                return arr[2];
+                else
+                return null;
+            }
+            function setCookie(name,value){
+                var date = new Date();
+                var expireDays = 30;
+                date.setTime(date.getTime()+expireDays*24*3600*1000);
+                document.cookie = name + "=" + value + "; expires=" + date.toGMTString() + "; path=/; domain=" + document.domain;
+            }
+            //--------- h5 local cache -----
+            
+            function openUrl(url) {
+                window.location = url;
+            }
+            
+            var browser = {
+                versions: function () {
+                    var u = navigator.userAgent, app = navigator.appVersion;
+                    return {//移动终端浏览器版本信息
+                        trident: u.indexOf('Trident') > -1, //IE内核
+                        presto: u.indexOf('Presto') > -1, //opera内核
+                        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+                        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+                        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+                        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+                                       android: u.indexOf('Android') > -1, //android终端
+                                       iPhone: u.indexOf('iPhone') > -1, //是否为iPhone
+                                       iPad: u.indexOf('iPad') > -1, //是否iPad
+                                       webApp: u.indexOf('Safari') == -1 //是否web应该程序，没有头部与底部
+                                       };
+                                       } (),
+                                       language: (navigator.browserLanguage || navigator.language).toLowerCase()
+                                       };
+                                       
+                                       function trim(str){ //删除左右两端的空格
+                                       return str.replace(/(^\s*)|(\s*$)/g, "");
+                                       }
+                                       
+                                       /**
+                                        2          * json对象转字符串形式
+                                        3         */
+                                       function json2str(o) {
+                                       var arr = [];
+                                       var fmt = function(s) {
+                                       if (typeof s == 'object' && s != null) return json2str(s);
+                                       return /^(string|number)$/.test(typeof s) ? "\"" + s + "\"" : s;
+                                       }
+                                       for (var i in o) arr.push("\"" + i + "\":" + fmt(o[i]));
+                                       return '{' + arr.join(',') + '}';
+                                       }
+                                       
+                                       function bridge(action,params) {
+                                       setTimeout(function(){
+                                                  if (params) {
+                                                  var urlJson = {"action":action};
+                                                  urlJson["params"] = params;
+                                                  var url = "daguanjia://operation?"+encodeURIComponent(JSON.stringify(urlJson));
+                                                  
+                                                  //                window.location.href = url;
+                                                  
+                                                  gapBridge = document.createElement("iframe");
+                                                  gapBridge.setAttribute("style", "display:none;");
+                                                  gapBridge.setAttribute("height","0px");
+                                                  gapBridge.setAttribute("width","0px");
+                                                  gapBridge.setAttribute("frameborder","0");
+                                                  document.documentElement.appendChild(gapBridge);
+                                                  
+                                                  gapBridge.src = url;
+                                                  
+                                                  } else {
+                                                  var urlJson = {"action":action};
+                                                  var url  = "daguanjia://operation?"+encodeURIComponent(JSON.stringify(urlJson));
+                                                  
+                                                  //                window.location.href = url;
+                                                  
+                                                  gapBridge = document.createElement("iframe");
+                                                  gapBridge.setAttribute("style", "display:none;");
+                                                  gapBridge.setAttribute("height","0px");
+                                                  gapBridge.setAttribute("width","0px");
+                                                  gapBridge.setAttribute("frameborder","0");
+                                                  document.documentElement.appendChild(gapBridge);
+                                                  
+                                                  gapBridge.src = url;
+                                                  
+                                                  }
+                                                  },20);
+                                       
+                                       }
+                                       
+                                       function save(key,value) {
+                                       value = ""+value;
+                                       var params = {};
+                                       params[key] = value;
+                                       bridge("save",params);
+                                       }
+                                       
+                                       function get(key,callback) {
+                                       var params = {"key":key,"callback":callback};
+                                       bridge("get",params);
+                                       }
+                                       
+                                       function needDisplayReload(callback) {
+                                       var params = {"callback":callback};
+                                       bridge("displayReload",params);
+                                       }
+                                       
+                                       function doubleClickBack(){
+                                       var params = {};
+                                       bridge("doubleback",params);
+                                       }
+                                       
+                                       function goBackSelf(callback){
+                                       var params = {"callback":callback};
+                                       bridge("goBackSelf",params);
+                                       }
+                                       
+                                       storgeUtils = {
+                                       setParam : function (name,value) {
+                                       localStorage.setItem(name,value);
+                                       save(name,value);
+                                       },
+                                       getParam : function(name){
+                                       var value = localStorage.getItem(name);
+                                       return value;
+                                       },
+                                       getParamWithNative : function(name,callback){
+                                       var value = localStorage.getItem(name);
+                                       if (value == null) {
+                                       get(name,callback);
+                                       }
+                                       return value;
+                                       }
+                                       };
+                                       
+                                       function sendPost(url,data,sequence,callback) {
+                                       var params = {"url":url,"data":data,"sequence":sequence,"callback":callback};
+                                       bridge("sendPost",params);
+                                       }
+                                       
+                                       function sendGet(url,data,sequence,callback) {
+                                       var params = {"url":url,"data":data,"sequence":sequence,"callback":callback};
+                                       bridge("sendGet",params);
+                                       }
+                                       
+                                       var sequenceData = {};
+                                       var sequenceId = 1;
+                                       function sendGetBack(sequence,data) {
+                                       console.log("shandiangou sendGetBack->"+data)
+                                       var callBack = sequenceData[sequence];
+                                       callBack.success(trim(decodeURIComponent(data)));
+                                       }
+                                       
+                                       function getUrl(data) {
+                                       var xmlhttp;
+                                       if (window.XMLHttpRequest)
+                                       {// code for IE7+, Firefox, Chrome, Opera, Safari
+                                       xmlhttp=new XMLHttpRequest();
+                                       }
+                                       else
+                                       {// code for IE6, IE5
+                                       xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+                                       }
+                                       
+                                       var baseurl = data["url"];
+                                       if (baseurl.indexOf("?")>-1) {
+                                       
+                                       } else {
+                                       baseurl = baseurl + "?1=1"
+                                       }
+                                       
+                                       var params = data["data"];
+                                       for (var key in params) {
+                                       if (params.hasOwnProperty(key)) {
+                                       baseurl = baseurl + "&" + key + "=" + params[key];
+                                       }
+                                       }
+                                       
+                                       xmlhttp.open("GET",baseurl,true);
+                                       xmlhttp.onreadystatechange = function () {
+                                       if(xmlhttp.readyState == 4) {
+                                       if( xmlhttp.status >= 200 && xmlhttp.status < 300 || xmlhttp.status == 304 ) {
+                                       var result = trim(xmlhttp.responseText);
+                                       data.success(result);
+                                       }else if(data.error){
+                                       var errorText = "网络异常，请稍后再试";
+                                       data.error(errorText);
+                                       }
+                                       xmlhttp = null;
+                                       }
+                                       };
+                                       xmlhttp.send();
+                                       }
+                                       
+                                       function postUrl(data){
+                                       var xmlHttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+                                       var baseUrl = data["url"];
+                                       var params = data["data"];
+                                       var dataParams = null;
+                                       //      定义回调函数，用来识别请求完成,清空xmlHttp,防止内存泄露
+                                       //        xmlHttp.complete = function(){};
+                                       for( var key in params ){
+                                       if (params.hasOwnProperty(key)) {
+                                       dataParams = dataParams ? (dataParams + "&" + key + "=" + params[key]) : key + "=" + params[key];
+                                       }
+                                       }
+                                       xmlHttp.open("POST", baseUrl, true);
+                                       xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                                       xmlHttp.onreadystatechange = function () {
+                                       if ( xmlHttp.readyState == 4 ){
+                                       if( xmlHttp.status >= 200 && xmlHttp.status < 300 || xmlHttp.status == 304 ) {
+                                       var responseText = trim(xmlHttp.responseText);
+                                       data.success(responseText);
+                                       }else{
+                                       var errorText = "网络异常，请稍后再试";
+                                       data.error(errorText);
+                                       }
+                                       //                xmlHttp.complete();
+                                       xmlHttp = null;
+                                       }
+                                       };
+                                       xmlHttp.send(dataParams);
+                                       }
+                                       
+                                       function showAlert(title, content) {
+                                       var params = {"title":title,"content":content};
+                                       bridge("showAlert",params);
+                                       }
+                                       
+                                       function alisafepay(tradeNo,productName,productDescription,amount,notifyURl) {
+                                       var params = {"tradeNO":tradeNo,"productName":productName,"productDescription":productDescription,"amount":amount,"notifyURL":notifyURl};
+                                       bridge("alipay",params);
+                                       }
+                                       
+                                       function alisafepayWithCallBack(tradeNo,productName,productDescription,amount,notifyURl,callBackUrl) {
+                                       var params = {"tradeNO":tradeNo,"productName":productName,"productDescription":productDescription,"amount":amount,"notifyURL":notifyURl,"callbackURL":callBackUrl};
+                                       bridge("alipay",params);
+                                       }
+                                       
+                                       
+                                       function getLocation(callback) {
+                                       var params = {"callback":callback};
+                                       bridge("getLocation",params);
+                                       }
+                                       
+                                       function nextPage(url) {
+                                       var params = {"url":url};
+                                       bridge("page",params);
+                                       }
+                                       
+                                       function updateTitle(title) {
+                                       var params = {"title":title};
+                                       bridge("updateNTitle",params);
+                                       }
+                                       
+                                       function updateRightButtonWithClicked(title,clicked) {
+                                       var params = {"title":title,"clicked":clicked};
+                                       bridge("updateNTRButton",params);
+                                       }
+                                       
+                                       function updateRightButtonToRAWURL(title,url) {
+                                       var params = {"title":title,"clicked":"openUrl('"+url+"')"};
+                                       bridge("updateNTRButton",params);
+                                       }
+                                       
+                                       function updatePushRightButtonToRAWURL(badge,title,url) {
+                                       var params = {"title":title,"clicked":"openUrl('"+url+"')","badge":badge};
+                                       bridge("updateNTRButton",params);
+                                       }
+                                       
+                                       function updateNTRPlus(action) {
+                                       var params = {"badge":3,"clicked":action};
+                                       bridge("updateNTRPlus",params);
+                                       }
+                                       
+                                       function closeNTRPlus(action) {
+                                       var params = {"badge":3,"clicked":action,"close":"true"};
+                                       bridge("updateNTRPlus",params);
+                                       }
+                                       
+                                       function openPicPicker(callback) {
+                                       var params = {"callback":callback};
+                                       bridge("openPicPicker",params);
+                                       }
+                                       
+                                       function openScan(callback) {
+                                       var params = {"callback":callback};
+                                       bridge("openScan",params);
+                                       }
+                                       
+                                       function searchBlueTooth() {
+                                       bridge("searchBlueTooth",null);
+                                       }
+                                       function printOrder(title) {
+                                       var params = {"title":title}
+                                       bridge("printOrder",params);
+                                       }
+                                       
+                                       function getDeviceID(callback){
+                                       var params = {"callback":callback};
+                                       bridge("getDeviceID",params);
+                                       }
+                                       function playSound() {
+                                       bridge("playSound","");
+                                       }
+                                       
+                                       function cleanCache() {
+                                       bridge("cleanCache","");
+                                       }
+                                       
+                                       function showNativeLoading() {
+                                       bridge("showLoading","");
+                                       }
+                                       
+                                       function hideNativeLoading() {
+                                       bridge("hideLoading","");
+                                       }
+                                       
+                                       function navigationbBack(disableAnimation) {
+                                       if (disableAnimation == 'false') {
+                                       var params = {"animation":"false"};
+                                       bridge("backNavigation",params);
+                                       
+                                       } else {
+                                       var params = {"animation":"true"};
+                                       bridge("backNavigation",params);
+                                       }
+                                       }
+                                       
+                                       function testSetStatusBarWhiteShare() {
+                                       var params = {"type":"setWhite"};
+                                       bridge("setStatusBar",params);
+                                       }
+                                       
+                                       function findSuperTargetWithClass(target,className) {
+                                       if (target.classList.contains(className)) {
+                                       return target;
+                                       } else if (target.parentElement != null) {
+                                       return findSuperTargetWithClass(target.parentElement,className);
+                                       } else {
+                                       return null;
+                                       }
+                                       }
+                                       
+                                       function addClickPerform(target) {
+                                       if (target == null) {
+                                       return;
+                                       }
+                                       target.addEventListener("touchmove",function (evt) {
+                                                               evt.target.classList.remove("clicked");
+                                                               },false);
+                                       
+                                       target.addEventListener("touchstart",function (evt) {
+                                                               evt.target.classList.add("clicked");
+                                                               },false);
+                                       
+                                       target.addEventListener("touchend",function (evt) {
+                                                               evt.target.classList.remove("clicked");
+                                                               },false);
+                                       }
+                                       
+                                       function addClickPerformWithAction(target,action) {
+                                       if (target == null) {
+                                       return;
+                                       }
+                                       target.addEventListener("touchmove",function (evt) {
+                                                               evt.preventDefault();
+                                                               evt.target.style.backgroundColor= "";
+                                                               },false);
+                                       
+                                       target.addEventListener("touchstart",function (evt) {
+                                                               evt.preventDefault();
+                                                               evt.target.style.backgroundColor= "rgba(210, 210, 210, 0.4)";
+                                                               },false);
+                                       
+                                       target.addEventListener("touchend",function (evt) {
+                                                               evt.preventDefault();
+                                                               evt.target.style.backgroundColor= "";
+                                                               if (target != null) {
+                                                               evt.target.style.backgroundColor= "";
+                                                               if (action) {
+                                                               action(target);
+                                                               }
+                                                               }
+                                                               },false);
+                                       }
+                                       
+                                       function addTouchClickWithAction(target,action) {
+                                       if (target == null) {
+                                       return;
+                                       }
+                                       target.addEventListener("touchmove",function (evt) {
+                                                               evt.preventDefault();
+                                                               },false);
+                                       
+                                       target.addEventListener("touchstart",function (evt) {
+                                                               evt.preventDefault();
+                                                               },false);
+                                       
+                                       target.addEventListener("touchend",function (evt) {
+                                                               evt.preventDefault();
+                                                               if (target != null) {
+                                                               if (action) {
+                                                               action(evt);
+                                                               }
+                                                               }
+                                                               },false);
+                                       }
+                                       
+                                       function addClickPerformInSubClass(target,subClassName, clickAction) {
+                                       target.addEventListener("touchmove",function (evt) {
+                                                               evt.preventDefault();
+                                                               var target = findSuperTargetWithClass(evt.target,subClassName);
+                                                               if (target != null) {
+                                                               target.classList.remove("clicked");
+                                                               }
+                                                               },false);
+                                       
+                                       target.addEventListener("touchstart",function (evt) {
+                                                               evt.preventDefault();
+                                                               var target = findSuperTargetWithClass(evt.target,subClassName);
+                                                               if (target != null) {
+                                                               target.classList.add("clicked");
+                                                               }
+                                                               },false);
+                                       
+                                       target.addEventListener("touchend",function (evt) {
+                                                               evt.preventDefault();
+                                                               var target = findSuperTargetWithClass(evt.target,subClassName);
+                                                               if (target != null) {
+                                                               target.classList.remove("clicked");
+                                                               setTimeout(function(){
+                                                                          clickAction(target);
+                                                                          },20);
+                                                               }
+                                                               },false);
+                                       }
+                                       function alert(words){
+                                       var iframe = document.createElement("IFRAME");
+                                       iframe.setAttribute("src", 'data:text/plain,');
+                                       document.documentElement.appendChild(iframe);
+                                       window.frames[0].window.alert(words);
+                                       iframe.parentNode.removeChild(iframe);
+                                       }
+                                       
+                                       
+                                       (function() {
+                                        var escapeEl = document.createElement('textarea');
+                                        
+                                        window.escapeHTML = function(html) {
+                                        escapeEl.textContent = html;
+                                        return escapeEl.innerHTML;
+                                        };
+                                        
+                                        window.unescapeHTML = function(html) {
+                                        escapeEl.innerHTML = html;
+                                        return escapeEl.textContent;
+                                        };
+                                        })();
+                                       
+                                       //------------------时间处理相关-------------
+                                       
+                                       function getDateTimeStamp(dateStr){
+                                       return Date.parse(dateStr.replace(/-/gi,"/"));
+                                       }
+                                       
+                                       function jsDateDiff(publishTime){
+                                       var d_minutes,d_hours,d_days;
+                                       var timeNow = parseInt(new Date().getTime()/1000);
+                                       var d;
+                                       d = timeNow - publishTime;
+                                       d_days = parseInt(d/86400);
+                                       d_hours = parseInt(d/3600);
+                                       d_minutes = parseInt(d/60);
+                                       if(d_days>0 && d_days<4){
+                                       return d_days+"天前";
+                                       }else if(d_days<=0 && d_hours>0){
+                                       return d_hours+"小时前";
+                                       }else if(d_hours<=0 && d_minutes>0){
+                                       return d_minutes+"分钟前";
+                                       }else{
+                                       var s = new Date(publishTime*1000);
+                                       // s.getFullYear()+"年";
+                                       return (s.getMonth()+1)+"月"+s.getDate()+"日";
+                                       }
+                                       }
+                                       
+                                       function jsDateDiffFromDate(publishTime) {
+                                       return jsDateDiff(getDateTimeStamp(publishTime)/1000);
+                                       }
+                                       //------------------时间处理相关---------------
+            </script>
+            <style>
+                .message {
+                    width:100%;
+                    font-size: 20px;
+                    text-align: center;
+                    vertical-align: middle;
+                    font-weight: bold;
+                    color:rgb(255,106,44);
+                    padding-top:200px;
+                    
+                }
+            .logo{
+                width:64px;
+                height:64px;
+                margin:53px auto 0 auto;
+            }
+            .logo img {
+                width:100%;
+            }
+            .logoText{
+                font-size:21px;
+                color:#f60;
+                text-align: center;
+                margin-top:5px;
+            }
+            .edition{
+                font-size:13px;
+                color:#838383;
+                text-align: center;
+            }
+            .hotLine{
+                text-align: center;
+                color:#fff;
+                background:#f60;
+                margin:55px 15px 15px;
+                height: 40px;
+                line-height:40px;
+                border-radius: 3px;
+                font-size:15px;
+                position: relative;
+            }
+            .join{
+                text-align: center;
+                color:#f60;
+                margin:10px 15px 15px;
+                height: 40px;
+                line-height:40px;
+                border-radius: 3px;
+                font-size:15px;
+                position: relative;
+                border:1px solid #f60;
+            }
+            .inputTextIcon{
+                width:11px;
+                height:40px;
+                background:url(http://www.52shangou.com/img/1186/194131130454f8237fbd68d630f786adfbb1087169f9533bce968fd.png) left center no-repeat;
+                background-size:11px 15px;
+                overflow: hidden;
+                position: absolute;
+                display: block;
+                top:0;
+                left:50%;
+                margin-left: -92px;
+            }
+            .inputTextTitle {
+                position: absolute;
+                left:50%;
+                top:0;
+                margin-left:-74px;
+                overflow: hidden;
+            }
+            .inputPromptIT{
+                position: relative;
+            }
+            .inputText{
+                width:100%;
+                height:30px;
+                border:none;
+                color:#666;
+                border-radius: 5px;
+            }
+            </style>
+            <title>无法连接到网络</title>
+    </head>
+    
+    <body>
+        <style type="text/css">
+            .auto_top_page{
+                /*position: fixed;*/
+                position: absolute;
+                width: 100%;
+                left: 0;
+                right: 0;
+                top: 0;
+                z-index: 1;
+            }
+        .topTitle{
+            position: relative;
+            width:100%;
+            font-size: 1.2rem;
+            text-align: center;
+            display: block;
+        }
+        .topTitleAndriod{
+            height: 50px;
+            line-height: 50px;
+        }
+        .topTitleIphone{
+            height: 70px;
+            line-height: 70px;
+        }
+        .topTitleWhite{
+            color: #f60;
+            background-color: #fff;
+            border-bottom: 1px solid #dedede;
+        }
+        .topTitleYellow{
+            color: #fff;
+            /*background-color: #f60;*/
+            background-color: #fa4100;
+        }
+        .topLeftArrow{
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            top: 0;
+            left: 0;
+            text-align: left;
+        }
+        .topLeftArrow img{
+            position: absolute;
+            height: 16px;
+            left: 15px;
+            top: 17px;
+        }
+        .topRightTitle{
+            position: absolute;
+            width: 35px;
+            height: 50px;
+            text-align: right;
+            line-height: 50px;
+            padding-right: 15px;
+            right: 0;
+            top: 0;
+            font-size: 15px;
+        }
+        .topCenterTitle{
+            position: absolute;
+            height: 50px;
+            line-height: 50px;
+            left: 50px;
+            right: 50px;
+            top: 0;
+        }
+        .top20Title{
+            top: 20px;
+        }
+        </style>
+        <div id="auto_top_page" class="auto_top_page">
+            <!-- iphone bridgeLibVersion(1.6) 顶部变橙色-->
+            
+            <!-- iphone bridgeLibVersion(1.5) -->
+            <!--        <div id="topTitle" class="topTitle topTitleIphone topTitleIphoneWhite">-->
+            <div id="topTitle" class="topTitle topTitleIphone topTitleYellow">
+                <div id="topLeftArrow" class="topLeftArrow top20Title">
+                    <!--                <img src="http://www.52shangou.com/img/2009/79963649254cb2aae448d675f7f3cebc0dfd3d834b44dffc4de31f.png">-->
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAiCAYAAABStIn6AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA3NpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NTc3MiwgMjAxNC8wMS8xMy0xOTo0NDowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo3MjllNGRhNy1mOTIyLTQ5NDEtYTYxMS1lZjQ2MDJkMDk0ZGUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MzJFRTc1QkU5NjdCMTFFNDg0MjBDQzM0MkU4NzUzNUYiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MzJFRTc1QkQ5NjdCMTFFNDg0MjBDQzM0MkU4NzUzNUYiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6ZDI3MzY3MmQtYzIzNC00YmNiLWE3MmYtY2VlNGY5NzQwOTZhIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjcyOWU0ZGE3LWY5MjItNDk0MS1hNjExLWVmNDYwMmQwOTRkZSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PiI7liIAAADISURBVHjarNaNDcIgEAXgiwvoCI7QkRzFUTpCR3AERukGeJgjqZWfu/ckeUkDyVdo4YLknIXIotk1j4vgbdG8NNfPMzmT0tbS9xcEgZpIFOoiEWiIeKEp4oFcyAxyIyMohPSgMNKCIOQMwcgRopAK0UiFkiGJqU2lHiWrL3erMVgzcbVZ7bZUQT82jZ07YKzVCWG9gTA2Ggxhsze5Mc/6XZj3r0yxyF4ZYtEd3MWQA9rE0NP+gzFXmi9MyPtRxTYWKnlqbm8BBgAx2Q/fYLkL9AAAAABJRU5ErkJggg==">
+                        </div>
+                <div id="topCenterTitle" class="topCenterTitle top20Title">无法连接到网络</div>
+            </div>
+        </div>
+        <script>
+            //注册顶部导航左侧touch事件
+            addClickPerformInSubClass(
+                                      document.getElementById("topLeftArrow"),
+                                      "topLeftArrow",
+                                      function(target){
+                                      navigationbBack('true');
+                                      }
+                                      );
+                                      //注册顶部导航右侧touch事件(当右部导航存在时注册)
+            </script>
+        <div id="auto_content_page" style="background: #F6F6F6">
+            <div style="display: block;text-align: left;  font-size: 15px;color:#999999;line-height: 25px;margin-top: 10px;margin-left:20px;margin-right:20px;">
+                <p style="margin: 20px 0px;color:#646464;">请参考以下几点检查您的网络连接状态</p>
+                <p style="margin: 10px 0px;">1、确保没有开启飞行模式</p>
+                <p style="margin: 10px 0px;">2、如果您连接的是无线互联网热点，请检查该热点是否已接入互联网，或该热点是否允许您的手机访问互联网</p>
+                <p style="margin: 10px 0px;">3、检查手机是否已接入互联网，且手机没有被停机</p>
+            </div>
+        </div>
+        
+        <style type="text/css">
+            .auto_content_page{
+                position: absolute;
+                width: 100%;
+                overflow: hidden;
+                -webkit-overflow-scrolling: touch;
+                z-index: 0;
+            }
+        .auto_bottom_page{
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 50px;
+            z-index: 1;
+        }
+        </style>
+        <script type="text/javascript">
+            var auto_top_page = document.getElementById("auto_top_page");
+            var auto_content_page = document.getElementById("auto_content_page");
+            var auto_bottom_page = document.getElementById("auto_bottom_page");
+            if( auto_top_page ){
+                document.getElementById("auto_content_page").className = "auto_content_page";
+                document.getElementById("auto_content_page").style.top = auto_top_page.offsetHeight + "px";
+            }else{
+                document.getElementById("auto_content_page").className = "auto_content_page";
+                document.getElementById("auto_content_page").style.top = 0 + "px";
+            }
+        if( auto_bottom_page ){
+            document.getElementById("auto_bottom_page").className = "auto_bottom_page";
+            document.getElementById("auto_content_page").style.bottom = auto_bottom_page.offsetHeight + "px";
+        }else{
+            document.getElementById("auto_content_page").style.bottom = 0 + "px";
+        }
+        </script>
+        <script type="text/javascript">
+            var clientHeight = document.documentElement.clientHeight;
+            document.body.addEventListener("focus",function(e){
+                                           //            document.body.style.position = "absolute";
+                                           document.body.style.position = "fixed";
+                                           document.body.style.height = clientHeight + "px";
+                                           },true);
+                                           document.body.addEventListener("blur",function(e){
+                                                                          document.body.removeAttribute("style");
+                                                                          },true);
+            </script>
+        
+        <div class="message">
+        </div>
+        <!--<script type="text/javascript">
+         //    var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+         //    document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fa9fd19b29567f981c147ad033af1aa71' type='text/javascript'%3E%3C/script%3E"));
+         </script>-->
+        
+        <!--
+         
+         --><script>
+             function tel(){
+                 window.location = "tel:4001575151"
+             }
+         function icp(){
+             window.location = "http://www.miibeian.gov.cn/"
+         }
+         function join(){
+             window.location = "../../joinUs/index.html?page=new-app-page&fullscreen=true"
+         }
+         </script>
+    </body>
+</html>
