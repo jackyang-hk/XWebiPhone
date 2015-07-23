@@ -1,4 +1,4 @@
-#### 闪电购买家版客户端代码库
+#### XWebiPhone
 
 ### iPhone 2.4版本Feature
 
